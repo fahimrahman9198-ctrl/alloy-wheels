@@ -27,16 +27,26 @@ function BeforeAfterSlider({ before, after }: { before: string; after: string })
     setPos(Math.max(5, Math.min(95, ((clientX - rect.left) / rect.width) * 100)))
   }
 
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => { if (dragging.current) update(e.clientX) }
+    const onUp = () => { dragging.current = false }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+    return () => {
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+    }
+  }, [])
+
   return (
     <div
       ref={ref}
       className="relative w-full overflow-hidden select-none cursor-ew-resize"
       style={{ aspectRatio: '3/2' }}
       onMouseDown={() => { dragging.current = true }}
-      onMouseMove={(e) => { if (dragging.current) update(e.clientX) }}
-      onMouseUp={() => { dragging.current = false }}
-      onMouseLeave={() => { dragging.current = false }}
-      onTouchMove={(e) => update(e.touches[0].clientX)}
+      onTouchMove={(e) => { e.preventDefault(); update(e.touches[0].clientX) }}
+      onTouchStart={() => { dragging.current = true }}
+      onTouchEnd={() => { dragging.current = false }}
     >
       <img src={after} alt="After" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>

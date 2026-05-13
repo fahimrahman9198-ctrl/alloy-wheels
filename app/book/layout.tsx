@@ -96,9 +96,15 @@ export default function BookLayout({ children }: { children: React.ReactNode }) 
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+      <motion.div
+        key={pathname}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className="max-w-3xl mx-auto px-4 sm:px-6 py-10"
+      >
         {children}
-      </div>
+      </motion.div>
     </div>
   )
 }

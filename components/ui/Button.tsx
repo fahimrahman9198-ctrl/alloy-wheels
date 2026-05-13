@@ -15,15 +15,15 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-[#FF5722] hover:bg-[#FF7043] active:bg-[#E64A19] text-white border-transparent hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(255,87,34,0.45)] active:translate-y-0',
+    'bg-[#FF5722] hover:bg-[#FF7043] active:bg-[#E64A19] active:scale-[0.98] text-white border-transparent hover:-translate-y-0.5 hover:shadow-[0_6px_28px_rgba(255,87,34,0.55)] active:shadow-none active:translate-y-0',
   secondary:
-    'bg-transparent border border-[#FF5722] text-[#FF5722] hover:bg-[#FF5722]/10 hover:-translate-y-0.5',
+    'bg-transparent border border-[#FF5722] text-[#FF5722] hover:bg-[#FF5722]/10 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(255,87,34,0.25)]',
   tertiary:
     'bg-transparent border border-[#3A3A3A] text-[#B0B0B0] hover:border-[#FF5722] hover:text-white hover:-translate-y-0.5',
   ghost:
     'bg-transparent border-transparent text-[#B0B0B0] hover:text-white hover:bg-white/5',
   danger:
-    'bg-[#F44336] hover:bg-[#E53935] active:bg-[#C62828] text-white border-transparent hover:-translate-y-0.5',
+    'bg-[#F44336] hover:bg-[#E53935] active:bg-[#C62828] active:scale-[0.98] text-white border-transparent hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(244,67,54,0.45)]',
 }
 
 const sizeClasses: Record<Size, string> = {

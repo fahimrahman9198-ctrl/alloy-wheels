@@ -118,20 +118,34 @@ function HeroSection() {
           className="flex-1 flex justify-center items-center"
         >
           <div className="relative">
-            <div className="absolute inset-0 rounded-full animate-pulse-glow" style={{ margin: '-20px' }} />
-            <svg
+            {/* Pulsing glow ring */}
+            <motion.div
+              animate={{ scale: [1, 1.06, 1], opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute inset-0 rounded-full"
+              style={{ boxShadow: '0 0 60px 20px rgba(255,87,34,0.3)', margin: '-10px' }}
+            />
+            {/* Spinning wheel using Framer Motion for guaranteed smooth rotation */}
+            <motion.svg
               width="320"
               height="320"
               viewBox="0 0 320 320"
               fill="none"
-              className="animate-spin-slow drop-shadow-[0_0_40px_rgba(255,87,34,0.3)]"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+              style={{ filter: 'drop-shadow(0 0 40px rgba(255,87,34,0.3))' }}
               aria-hidden="true"
             >
+              {/* Tyre */}
               <circle cx="160" cy="160" r="150" stroke="#2A2A2A" strokeWidth="24" />
+              {/* Inner rim edge */}
               <circle cx="160" cy="160" r="130" stroke="#3A3A3A" strokeWidth="3" />
+              {/* Hub ring */}
               <circle cx="160" cy="160" r="48" stroke="#3A3A3A" strokeWidth="3" />
+              {/* Center hub */}
               <circle cx="160" cy="160" r="22" fill="#FF5722" />
               <circle cx="160" cy="160" r="10" fill="#E64A19" />
+              {/* 5 tapered spokes */}
               {[0, 72, 144, 216, 288].map((deg) => {
                 const rad = (deg * Math.PI) / 180
                 const sw = 16
@@ -152,14 +166,16 @@ function HeroSection() {
                   />
                 )
               })}
+              {/* Bolt holes between spokes */}
               {[36, 108, 180, 252, 324].map((deg) => {
                 const rad = (deg * Math.PI) / 180
                 return (
                   <circle key={deg} cx={160 + 36 * Math.cos(rad)} cy={160 + 36 * Math.sin(rad)} r="5" fill="#3A3A3A" />
                 )
               })}
+              {/* Decorative dashed ring */}
               <circle cx="160" cy="160" r="100" stroke="#FF5722" strokeWidth="1.5" strokeOpacity="0.3" strokeDasharray="8 6" />
-            </svg>
+            </motion.svg>
           </div>
         </motion.div>
       </div>
@@ -478,15 +494,23 @@ function BeforeAfterSlider({ before, after, label }: { before: string; after: st
     setPos(Math.max(5, Math.min(95, ((clientX - rect.left) / rect.width) * 100)))
   }
 
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => { if (dragging.current) updatePos(e.clientX) }
+    const onUp = () => { dragging.current = false }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+    return () => {
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+    }
+  }, [])
+
   return (
     <div
       ref={containerRef}
       className="relative select-none overflow-hidden rounded-xl cursor-ew-resize"
       style={{ aspectRatio: '3/2' }}
       onMouseDown={() => { dragging.current = true }}
-      onMouseMove={(e) => { if (dragging.current) updatePos(e.clientX) }}
-      onMouseUp={() => { dragging.current = false }}
-      onMouseLeave={() => { dragging.current = false }}
       onTouchMove={(e) => updatePos(e.touches[0].clientX)}
     >
       <img src={after} alt="After repair" className="absolute inset-0 w-full h-full object-cover" />
