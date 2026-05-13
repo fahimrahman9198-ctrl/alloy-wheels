@@ -16,11 +16,11 @@ export const quoteContactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
   email: z.string().email('Please enter a valid email address'),
   phone: z.string().regex(NANP_PHONE, 'Please enter a valid Canadian/US phone number'),
-  isDealer: z.boolean().default(false),
+  isDealer: z.boolean(),
   dealerName: z.string().optional(),
   dealerContact: z.string().optional(),
-  marketingOptIn: z.boolean().default(false),
-  smsOptIn: z.boolean().default(false),
+  marketingOptIn: z.boolean(),
+  smsOptIn: z.boolean(),
 }).refine(
   (data) => !data.isDealer || (data.dealerName && data.dealerName.length > 0),
   { message: 'Dealer name is required for trade accounts', path: ['dealerName'] }
